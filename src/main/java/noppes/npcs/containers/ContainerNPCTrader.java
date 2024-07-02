@@ -1,5 +1,7 @@
 package noppes.npcs.containers;
 
+import org.apache.logging.log4j.LogManager;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -43,32 +45,45 @@ public class ContainerNPCTrader extends ContainerNpcInterface{
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int i){
+    public ItemStack transferStackInSlot(EntityPlayer player, int index){
         return null;
     }
     @Override
-    public ItemStack slotClick(int i, int j, int par3, EntityPlayer entityplayer){
-    	if(par3 == 6)
-    		par3 = 0;
-    	if(i < 0 || i >= 18)
-        	return super.slotClick(i, j, par3, entityplayer);
-		if( j ==1 )
+    public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer entityplayer){
+    		LogManager.getLogger().info("Trager Mode"+mode);
+    	if(mode == 6)
+    		mode = 0;
+    	if(slotId < 0 || slotId >= 18)
+        	return super.slotClick(slotId, clickedButton, mode, entityplayer);
+		if( clickedButton ==1 )
 			return null;
-        Slot slot = (Slot)inventorySlots.get(i);
+        Slot slot = (Slot)inventorySlots.get(slotId);
         if(slot == null || slot.getStack() == null)
         	return null;
         ItemStack item = slot.getStack();
         if(!canGivePlayer(item, entityplayer))
         	return null;
-        if(!canBuy(i, entityplayer))
+        if(!canBuy(slotId, entityplayer))
         	return null;
-        if (!isSlotEnabled(i, entityplayer)) 
+        if (!isSlotEnabled(slotId, entityplayer)) 
         	return null;
-        NoppesUtilPlayer.consumeItem(entityplayer, role.inventoryCurrency.getStackInSlot(i), role.ignoreDamage, role.ignoreNBT);
-        NoppesUtilPlayer.consumeItem(entityplayer, role.inventoryCurrency.getStackInSlot(i + 18), role.ignoreDamage, role.ignoreNBT);
+        
+        if (mode != 1 && entityplayer.inventory.getFirstEmptyStack() != -1) {
+        NoppesUtilPlayer.consumeItem(entityplayer, role.inventoryCurrency.getStackInSlot(slotId), role.ignoreDamage, role.ignoreNBT);
+        NoppesUtilPlayer.consumeItem(entityplayer, role.inventoryCurrency.getStackInSlot(slotId + 18), role.ignoreDamage, role.ignoreNBT);
         ItemStack soldItem = item.copy();
-        givePlayer(soldItem, entityplayer);
-        role.addPurchase(i, entityplayer.getDisplayName());
+        entityplayer.inventory.addItemStackToInventory(soldItem);
+        role.addPurchase(slotId, entityplayer.getDisplayName());
+        } else {
+            while(canBuy(slotId, entityplayer) && entityplayer.inventory.getFirstEmptyStack() != -1) {
+            	NoppesUtilPlayer.consumeItem(entityplayer, role.inventoryCurrency.getStackInSlot(slotId), role.ignoreDamage, role.ignoreNBT);
+                NoppesUtilPlayer.consumeItem(entityplayer, role.inventoryCurrency.getStackInSlot(slotId + 18), role.ignoreDamage, role.ignoreNBT);
+                ItemStack soldItem = item.copy();
+                entityplayer.inventory.addItemStackToInventory(soldItem);
+                role.addPurchase(slotId, entityplayer.getDisplayName());
+            }
+        }
+        ItemStack soldItem = item.copy();
         return soldItem;
     	
     }
