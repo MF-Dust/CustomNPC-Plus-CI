@@ -60,6 +60,12 @@ public class ConfigMain
 
     public static Property SoulStoneFriendlyNPCsProperty;
     public static boolean SoulStoneFriendlyNPCs = false;
+    
+    public static Property SoulStoneFollowerNPCsProperty;
+    public static boolean SoulStoneFollowerNPCs = true;
+    
+    public static Property SoulStoneRegainProperty;
+    public static boolean SoulStoneRegain = false;
 
     public static Property DatFormatProperty;
     public static boolean DatFormat = false;
@@ -153,17 +159,23 @@ public class ConfigMain
             IceMeltsEnabledProperty = config.get(GENERAL, "Ice Melt Enabled", true);
             IceMeltsEnabled = IceMeltsEnabledProperty.getBoolean(true);
 
-            SoulStoneAnimalsProperty = config.get(GENERAL, "Normal playes can use soulstone on Animals", true);
+            SoulStoneAnimalsProperty = config.get(GENERAL, "Normal players can use soulstone on Animals", true);
             SoulStoneAnimals = SoulStoneAnimalsProperty.getBoolean(true);
 
-            SoulStoneVillagersProperty = config.get(GENERAL, "Normal playes can use soulstone on Villagers", true);
+            SoulStoneVillagersProperty = config.get(GENERAL, "Normal players can use soulstone on Villagers", true);
             SoulStoneVillagers = SoulStoneVillagersProperty.getBoolean(true);
 
-            SoulStoneNPCsProperty = config.get(GENERAL, "Normal playes can use soulstone on NPCs", false);
+            SoulStoneNPCsProperty = config.get(GENERAL, "Normal players can use soulstone on NPCs", false);
             SoulStoneNPCs = SoulStoneNPCsProperty.getBoolean(false);
 
-            SoulStoneFriendlyNPCsProperty = config.get(GENERAL, "Normal playes can use soulstone on Friendly NPCs", false);
+            SoulStoneFriendlyNPCsProperty = config.get(GENERAL, "Normal players can use soulstone on Friendly NPCs", false);
             SoulStoneFriendlyNPCs = SoulStoneFriendlyNPCsProperty.getBoolean(false);
+            
+            SoulStoneFollowerNPCsProperty = config.get(GENERAL, "Normal players can use soulstone on Follower NPCs", true);
+            SoulStoneFollowerNPCs = SoulStoneFollowerNPCsProperty.getBoolean(true);
+            
+            SoulStoneRegainProperty = config.get(GENERAL, "Regains an empty soulstone when a filled soulstone is used by normal players", false);
+            SoulStoneRegain = SoulStoneRegainProperty.getBoolean(false);
 
             DatFormatProperty = config.get(GENERAL, "Dat Format for PlayerData", false, "You need to use '/kamkeel config playerdata' to convert existing playerdata to new format.");
             DatFormat = DatFormatProperty.getBoolean(false);

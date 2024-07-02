@@ -92,7 +92,7 @@ public class ItemSoulstoneEmpty extends Item {
 				if(role.getOwner() == player)
 					return true;
 			}
-			if (npc.advanced.role == EnumRoleType.Follower){
+			if (ConfigMain.SoulStoneFollowerNPCs && npc.advanced.role == EnumRoleType.Follower){
 				RoleFollower role = (RoleFollower) npc.roleInterface;
 				if(role.getOwner() == player)
 					return !role.refuseSoulStone;

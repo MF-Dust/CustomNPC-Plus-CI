@@ -13,8 +13,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import noppes.npcs.CustomItems;
 import noppes.npcs.LogWriter;
+import noppes.npcs.NoppesUtilServer;
 import noppes.npcs.config.ConfigDebug;
+import noppes.npcs.config.ConfigMain;
 import noppes.npcs.constants.EnumRoleType;
 import noppes.npcs.controllers.PlayerDataController;
 import noppes.npcs.controllers.data.PlayerData;
@@ -61,8 +64,12 @@ public class ItemSoulstoneFilled extends Item {
     	if(!spawn(player, stack, world, x, y, z))
     		return false;
 		
-		if(!player.capabilities.isCreativeMode)
+		if(!player.capabilities.isCreativeMode) {
 			stack.splitStack(1);
+			if(ConfigMain.SoulStoneRegain) {
+			ItemStack stone = new ItemStack(CustomItems.soulstoneEmpty);
+			NoppesUtilServer.GivePlayerItem(player, player, stone);}
+			}
     	return true;
     }
     
