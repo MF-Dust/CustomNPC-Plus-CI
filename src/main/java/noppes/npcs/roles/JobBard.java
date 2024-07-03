@@ -13,8 +13,24 @@ import noppes.npcs.entity.EntityNPCInterface;
 import java.util.List;
 
 public class JobBard extends JobInterface{
-	public int minRange = 2;
-	public int maxRange = 64;
+	@Deprecated
+	public int minRange = 0;
+	@Deprecated
+	public int maxRange = 0;
+	
+	public int minRangeX = 5;
+	public int minRangeY = 5;
+	public int minRangeZ = 5;
+	public int maxRangeX = 10;
+	public int maxRangeY = 10;
+	public int maxRangeZ = 10;
+	
+	public int offsetX = 0;
+	public int offsetY = 0;
+	public int offsetZ = 0;
+	
+	public float volume = 4.0F;
+	public float pitch = 1.0F;
 
 	public boolean isStreamer = true;
 	public boolean hasOffRange = true;
@@ -25,6 +41,17 @@ public class JobBard extends JobInterface{
 
 	public JobBard(EntityNPCInterface npc) {
 		super(npc);
+		
+		if(this.minRange != 0) {
+			this.minRangeX = this.minRangeY = this.minRangeZ = this.minRange;
+			this.minRange = 0;
+		}
+		
+		if(this.maxRange != 0) {
+			this.maxRangeX = this.maxRangeY = this.maxRangeZ = this.maxRange;
+			this.maxRange = 0;
+		}
+		
 		if(CustomItems.banjo != null){
 			mainhand = new ItemStack(CustomItems.banjo);
 			overrideMainHand = overrideOffHand = true;
@@ -35,7 +62,18 @@ public class JobBard extends JobInterface{
 	public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
 		nbttagcompound.setString("BardSong", song);
 		nbttagcompound.setInteger("BardMinRange", minRange);
+		nbttagcompound.setInteger("BardMinRangeX", minRangeX);
+		nbttagcompound.setInteger("BardMinRangeY", minRangeY);
+		nbttagcompound.setInteger("BardMinRangeZ", minRangeZ);
 		nbttagcompound.setInteger("BardMaxRange", maxRange);
+		nbttagcompound.setInteger("BardMaxRangeX", maxRangeX);
+		nbttagcompound.setInteger("BardMaxRangeY", maxRangeY);
+		nbttagcompound.setInteger("BardMaxRangeZ", maxRangeZ);
+		nbttagcompound.setInteger("BardOffsetX", offsetX);
+		nbttagcompound.setInteger("BardOffsetY", offsetY);
+		nbttagcompound.setInteger("BardOffsetZ", offsetZ);
+		nbttagcompound.setFloat("BardVolume", volume);
+		nbttagcompound.setFloat("BardPitch", pitch);
 		nbttagcompound.setInteger("BardInstrument", instrument.ordinal());
 		nbttagcompound.setBoolean("BardStreamer", isStreamer);
 		nbttagcompound.setBoolean("BardHasOff", hasOffRange);
@@ -47,7 +85,18 @@ public class JobBard extends JobInterface{
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		song = nbttagcompound.getString("BardSong");
 		minRange = nbttagcompound.getInteger("BardMinRange");
+		minRangeX = nbttagcompound.getInteger("BardMinRangeX");
+		minRangeY = nbttagcompound.getInteger("BardMinRangeY");
+		minRangeZ = nbttagcompound.getInteger("BardMinRangeZ");
 		maxRange = nbttagcompound.getInteger("BardMaxRange");
+		maxRangeX = nbttagcompound.getInteger("BardMaxRangeX");
+		maxRangeY = nbttagcompound.getInteger("BardMaxRangeY");
+		maxRangeZ = nbttagcompound.getInteger("BardMaxRangeZ");
+		offsetX = nbttagcompound.getInteger("BardOffsetX");
+		offsetY = nbttagcompound.getInteger("BardOffsetY");
+		offsetZ = nbttagcompound.getInteger("BardOffsetZ");
+		volume = nbttagcompound.getFloat("BardVolume");
+		pitch = nbttagcompound.getFloat("BardPitch");
 		setInstrument(nbttagcompound.getInteger("BardInstrument"));
 		isStreamer = nbttagcompound.getBoolean("BardStreamer");
 		hasOffRange = nbttagcompound.getBoolean("BardHasOff");
@@ -88,16 +137,17 @@ public class JobBard extends JobInterface{
 	public EnumBardInstrument getInstrument(){
 		return instrument;
 	}
+	@SuppressWarnings("unchecked")
 	public void onLivingUpdate() {
 		if(!npc.isRemote() || song.isEmpty())
 			return;
 
         if(!MusicController.Instance.isPlaying(song)){
-			List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, npc.boundingBox.expand(minRange, minRange/2, minRange));
+			List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, npc.boundingBox.expand(minRangeX, minRangeY, minRangeZ).getOffsetBoundingBox(offsetX, offsetY, offsetZ));
 			if(!list.contains(CustomNpcs.proxy.getPlayer()))
 				return;
 			if(isStreamer)
-				MusicController.Instance.playStreaming(song, npc);
+				MusicController.Instance.playStreaming(song, npc, volume, pitch, offsetX, offsetY, offsetZ);
 			else
 				MusicController.Instance.playMusic(song, npc);
 		}
@@ -109,7 +159,7 @@ public class JobBard extends JobInterface{
 
 		}
         else if(hasOffRange){
-			List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, npc.boundingBox.expand(maxRange, maxRange/2, maxRange));
+			List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, npc.boundingBox.expand(maxRangeX, maxRangeY, maxRangeZ).getOffsetBoundingBox(offsetX, offsetY, offsetZ));
 			if(!list.contains(CustomNpcs.proxy.getPlayer()))
 				MusicController.Instance.stopMusic();
 		}
@@ -126,7 +176,7 @@ public class JobBard extends JobInterface{
 
 	@Override
 	public void delete() {
-		if(npc.worldObj.isRemote && hasOffRange){
+		if(npc.worldObj.isRemote){
 			if(MusicController.Instance.isPlaying(song)){
 				MusicController.Instance.stopMusic();
 			}

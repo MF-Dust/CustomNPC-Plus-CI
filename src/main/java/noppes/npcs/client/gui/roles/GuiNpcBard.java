@@ -33,20 +33,59 @@ public class GuiNpcBard extends GuiNPCInterface2 implements ISubGuiListener
 
 
         addLabel(new GuiNpcLabel(2,"bard.ondistance", guiLeft + 60, guiTop + 143));
-        addTextField(new GuiNpcTextField(2,this, this.fontRendererObj, guiLeft+160, guiTop + 138, 40, 20, job.minRange + ""));
-        getTextField(2).integersOnly = true;
-        getTextField(2).setMinMaxDefault(2, Integer.MAX_VALUE, 5);
+        addTextField(new GuiNpcTextField(8,this, this.fontRendererObj, guiLeft+140, guiTop + 138, 20, 20, job.minRangeX + ""));
+        getTextField(8).integersOnly = true;
+        getTextField(8).setMinMaxDefault(0, Integer.MAX_VALUE, 5);
+        addTextField(new GuiNpcTextField(9,this, this.fontRendererObj, guiLeft+165, guiTop + 138, 20, 20, job.minRangeY + ""));
+        getTextField(9).integersOnly = true;
+        getTextField(9).setMinMaxDefault(0, Integer.MAX_VALUE, 5);
+        addTextField(new GuiNpcTextField(10,this, this.fontRendererObj, guiLeft+190, guiTop + 138, 20, 20, job.minRangeZ + ""));
+        getTextField(10).integersOnly = true;
+        getTextField(10).setMinMaxDefault(0, Integer.MAX_VALUE, 5);
 
         addLabel(new GuiNpcLabel(4,"bard.hasoff", guiLeft + 60, guiTop + 166));
-        addButton(new GuiNpcButton(4, guiLeft + 160, guiTop + 161, 60, 20, new String[]{"gui.no","gui.yes"}, job.hasOffRange?1:0));
+        addButton(new GuiNpcButton(4, guiLeft + 140, guiTop + 161, 60, 20, new String[]{"gui.no","gui.yes"}, job.hasOffRange?1:0));
 
         addLabel(new GuiNpcLabel(3,"bard.offdistance", guiLeft + 60, guiTop + 189));
-        addTextField(new GuiNpcTextField(3,this, this.fontRendererObj, guiLeft+160, guiTop + 184, 40, 20, job.maxRange + ""));
-        getTextField(3).integersOnly = true;
-        getTextField(3).setMinMaxDefault(2, Integer.MAX_VALUE, 10);
+        addTextField(new GuiNpcTextField(11,this, this.fontRendererObj, guiLeft+140, guiTop + 184, 20, 20, job.maxRangeX + ""));
+        getTextField(11).integersOnly = true;
+        getTextField(11).setMinMaxDefault(0, Integer.MAX_VALUE, 10);
+        addTextField(new GuiNpcTextField(12,this, this.fontRendererObj, guiLeft+165, guiTop + 184, 20, 20, job.maxRangeY + ""));
+        getTextField(12).integersOnly = true;
+        getTextField(12).setMinMaxDefault(0, Integer.MAX_VALUE, 10);
+        addTextField(new GuiNpcTextField(13,this, this.fontRendererObj, guiLeft+190, guiTop + 184, 20, 20, job.maxRangeZ + ""));
+        getTextField(13).integersOnly = true;
+        getTextField(13).setMinMaxDefault(0, Integer.MAX_VALUE, 10);
+        
+        addLabel(new GuiNpcLabel(5,"bard.offsetX", guiLeft + 240, guiTop + 143));
+        addTextField(new GuiNpcTextField(4,this, this.fontRendererObj, guiLeft+290, guiTop + 138, 20, 20, job.offsetX + ""));
+        getTextField(4).integersOnly = true;
+        getTextField(4).setMinMaxDefault(Integer.MIN_VALUE, Integer.MAX_VALUE, 0);
+        
+        addLabel(new GuiNpcLabel(6,"bard.offsetY", guiLeft + 240, guiTop + 166));
+        addTextField(new GuiNpcTextField(5,this, this.fontRendererObj, guiLeft+290, guiTop + 161, 20, 20, job.offsetY + ""));
+        getTextField(5).integersOnly = true;
+        getTextField(5).setMinMaxDefault(Integer.MIN_VALUE, Integer.MAX_VALUE, 0);
+        
+        addLabel(new GuiNpcLabel(7,"bard.offsetZ", guiLeft + 240, guiTop + 189));
+        addTextField(new GuiNpcTextField(6,this, this.fontRendererObj, guiLeft+290, guiTop + 184, 20, 20,  job.offsetZ + ""));
+        getTextField(6).integersOnly = true;
+        getTextField(6).setMinMaxDefault(Integer.MIN_VALUE, Integer.MAX_VALUE, 0);
+        
+        addLabel(new GuiNpcLabel(10,"bard.volume", guiLeft + 290, guiTop + 50));
+        addTextField(new GuiNpcTextField(17,this, this.fontRendererObj, guiLeft+320, guiTop + 45, 20, 20,  job.volume + ""));
+        getTextField(17).setFloatsOnly();
+        getTextField(17).setMinMaxDefaultFloat(0.0F, Float.MAX_VALUE, 4.0F);
+        
+        addLabel(new GuiNpcLabel(11,"bard.pitch", guiLeft + 290, guiTop + 71));
+        addTextField(new GuiNpcTextField(18,this, this.fontRendererObj, guiLeft+320, guiTop + 66, 20, 20,  job.pitch + ""));
+        getTextField(18).setFloatsOnly();
+        getTextField(18).setMinMaxDefaultFloat(0.0F, Float.MAX_VALUE, 1.0F);
 
     	getLabel(3).enabled = job.hasOffRange;
-    	getTextField(3).enabled = job.hasOffRange;
+    	getTextField(11).enabled = job.hasOffRange;
+    	getTextField(12).enabled = job.hasOffRange;
+    	getTextField(13).enabled = job.hasOffRange;
 
     }
 
@@ -83,11 +122,24 @@ public class GuiNpcBard extends GuiNPCInterface2 implements ISubGuiListener
 
     @Override
 	public void save() {
-    	job.minRange = getTextField(2).getInteger();
-    	job.maxRange = getTextField(3).getInteger();
-
-    	if(job.minRange > job.maxRange)
-    		job.maxRange = job.minRange;
+    	job.offsetX =  getTextField(4).getInteger();
+    	job.offsetY =  getTextField(5).getInteger();
+    	job.offsetZ =  getTextField(6).getInteger();
+    	job.minRangeX = getTextField(8).getInteger();
+    	job.minRangeY = getTextField(9).getInteger();
+    	job.minRangeZ = getTextField(10).getInteger();
+    	job.maxRangeX = getTextField(11).getInteger();
+    	job.maxRangeY = getTextField(12).getInteger();
+    	job.maxRangeZ = getTextField(13).getInteger();
+    	job.volume= getTextField(17).getFloat();
+    	job.pitch= getTextField(18).getFloat();
+    			
+    	if(job.minRangeX > job.maxRangeX)
+    		job.maxRangeX = job.minRangeX;
+    	if(job.minRangeY > job.maxRangeY)
+    		job.maxRangeY = job.minRangeY;
+    	if(job.minRangeZ > job.maxRangeZ)
+    		job.maxRangeZ = job.minRangeZ;
 
     	MusicController.Instance.stopMusic();
 		Client.sendData(EnumPacketServer.JobSave, job.writeToNBT(new NBTTagCompound()));
