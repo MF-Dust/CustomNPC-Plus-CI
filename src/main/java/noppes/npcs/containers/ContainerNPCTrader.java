@@ -1,6 +1,5 @@
 package noppes.npcs.containers;
 
-import org.apache.logging.log4j.LogManager;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -50,7 +49,6 @@ public class ContainerNPCTrader extends ContainerNpcInterface{
     }
     @Override
     public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer entityplayer){
-    		LogManager.getLogger().info("Trager Mode"+mode);
     	if(mode == 6)
     		mode = 0;
     	if(slotId < 0 || slotId >= 18)

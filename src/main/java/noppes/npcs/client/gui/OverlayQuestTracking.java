@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import noppes.npcs.config.ConfigClient;
 import noppes.npcs.controllers.data.Quest;
 import org.lwjgl.opengl.GL11;
@@ -148,12 +149,14 @@ public class OverlayQuestTracking extends Gui {
 
         boolean instantComplete = compound.getBoolean("Instant");
         if(instantComplete){
-            turnInText.add("Completed automatically");
+        	String t = StatCollector.translateToLocal("gui.quesktracking.complete_automatically");
+            turnInText.add(t);
         }
         else {
             String npcName = compound.getString("TurnInNPC");
             if (!npcName.isEmpty()) {
-                turnInText.add("Complete with " + npcName);
+            	String t = StatCollector.translateToLocal("gui.quesktracking.turn_in_npc");
+                turnInText.add(t + npcName);
             }
         }
 
@@ -365,7 +368,7 @@ public class OverlayQuestTracking extends Gui {
             int j;
             int k;
 
-            if (c0 == 38 && i + 1 < p_78255_1_.length())
+            if ((c0 == 38 || c0 == '§') && i + 1 < p_78255_1_.length())
             {
                 j = "0123456789abcdefklmnor".indexOf(p_78255_1_.toLowerCase().charAt(i + 1));
 
