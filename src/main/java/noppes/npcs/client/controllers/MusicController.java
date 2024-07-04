@@ -1,11 +1,17 @@
 package noppes.npcs.client.controllers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
+import net.minecraft.client.audio.SoundManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import noppes.npcs.mixinutil.ISoundHandlerAccessor;
+import noppes.npcs.mixinutil.ISoundManagerAccessor;
 
 
 public class MusicController {
@@ -14,11 +20,47 @@ public class MusicController {
     public PositionedSoundRecord playing;
     public ResourceLocation playingResource;
     public Entity playingEntity;
+    
 
 	public MusicController(){
 		Instance = this;
 	}
+	
+//	private void invokeFadeOut(SoundHandler soundHandler, ISound sound, String filename, long millis) {
+//		LOGGER.info("Trying to fadeout2");
+//        try {
+//            // 使用反射获取 SoundHandler 类中的 sndManager 字段
+//            Field sndManagerField = SoundHandler.class.getDeclaredField("sndManager");
+//            sndManagerField.setAccessible(true);
+//            SoundManager sndManager = (SoundManager) sndManagerField.get(soundHandler);
+//            LOGGER.info("Trying to fadeout2-1");
+//
+//            // 使用反射获取 fadeOut 方法
+//            Method fadeOutMethod = SoundManager.class.getDeclaredMethod("fadeOut", ISound.class, String.class, long.class);
+//            fadeOutMethod.setAccessible(true);
+//            LOGGER.info("Trying to fadeout2-2");
+//
+//            // 调用 fadeOut 方法
+//            fadeOutMethod.invoke(sndManager, sound, filename, millis);
+//            LOGGER.info("Trying to fadeout2-3");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
+	public void fadeOutStreaming(String filename, long millis){
+		SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
+		if(playing != null) {
+	        ISoundHandlerAccessor accessor = (ISoundHandlerAccessor) handler;
+	        SoundManager soundManager = accessor.getSoundManager();
+	        ISoundManagerAccessor accessor1 = (ISoundManagerAccessor) soundManager;
+	        accessor1.fadeOut(playing, filename, millis);
+		}
+		playingResource = null;
+		playingEntity = null;
+		playing = null;
+	}
+	
 	public void stopMusic(){
 		SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
 		if(playing != null)
@@ -51,6 +93,15 @@ public class MusicController {
 		SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
         playing = new PositionedSoundRecord(playingResource, volume, pitch, (float)entity.posX + offsetX, (float)entity.posY + offsetY, (float)entity.posZ + offsetZ);
         handler.playSound(playing);
+	}
+	
+	public void playStreaming(String music, ISound song){
+		if(isPlaying(music)){
+			return;
+		}
+		stopMusic();
+		SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
+        handler.playSound(song);
 	}
 	
 	public void playMusic(String music, Entity entity) {

@@ -39,3 +39,4 @@ addon.late.local.gradle.kts
 layout.json
 out
 run
+/.apt_generated/

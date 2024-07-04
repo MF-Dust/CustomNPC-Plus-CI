@@ -12,23 +12,26 @@ import noppes.npcs.entity.EntityNPCInterface;
 
 import java.util.List;
 
-public class JobBard extends JobInterface{
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class JobBard extends JobInterface {
 	@Deprecated
 	public int minRange = 0;
 	@Deprecated
 	public int maxRange = 0;
-	
+
 	public int minRangeX = 5;
 	public int minRangeY = 5;
 	public int minRangeZ = 5;
 	public int maxRangeX = 10;
 	public int maxRangeY = 10;
 	public int maxRangeZ = 10;
-	
+
 	public int offsetX = 0;
 	public int offsetY = 0;
 	public int offsetZ = 0;
-	
+
 	public float volume = 4.0F;
 	public float pitch = 1.0F;
 
@@ -38,21 +41,22 @@ public class JobBard extends JobInterface{
 	public String song = "";
 
 	private EnumBardInstrument instrument = EnumBardInstrument.Banjo;
+	
 
 	public JobBard(EntityNPCInterface npc) {
 		super(npc);
-		
-		if(this.minRange != 0) {
+
+		if (this.minRange != 0) {
 			this.minRangeX = this.minRangeY = this.minRangeZ = this.minRange;
 			this.minRange = 0;
 		}
-		
-		if(this.maxRange != 0) {
+
+		if (this.maxRange != 0) {
 			this.maxRangeX = this.maxRangeY = this.maxRangeZ = this.maxRange;
 			this.maxRange = 0;
 		}
-		
-		if(CustomItems.banjo != null){
+
+		if (CustomItems.banjo != null) {
 			mainhand = new ItemStack(CustomItems.banjo);
 			overrideMainHand = overrideOffHand = true;
 		}
@@ -103,11 +107,11 @@ public class JobBard extends JobInterface{
 	}
 
 	public void setInstrument(int i) {
-		if(CustomItems.banjo == null)
+		if (CustomItems.banjo == null)
 			return;
 		instrument = EnumBardInstrument.values()[i];
 		overrideMainHand = overrideOffHand = instrument != EnumBardInstrument.None;
-		switch(instrument){
+		switch (instrument) {
 		case None:
 			this.mainhand = null;
 			this.offhand = null;
@@ -134,39 +138,47 @@ public class JobBard extends JobInterface{
 			break;
 		}
 	}
-	public EnumBardInstrument getInstrument(){
+
+	public EnumBardInstrument getInstrument() {
 		return instrument;
 	}
+
 	@SuppressWarnings("unchecked")
 	public void onLivingUpdate() {
-		if(!npc.isRemote() || song.isEmpty())
+		if (!npc.isRemote() || song.isEmpty())
 			return;
 
-        if(!MusicController.Instance.isPlaying(song)){
-			List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, npc.boundingBox.expand(minRangeX, minRangeY, minRangeZ).getOffsetBoundingBox(offsetX, offsetY, offsetZ));
-			if(!list.contains(CustomNpcs.proxy.getPlayer()))
+		if (!MusicController.Instance.isPlaying(song)) {
+			List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, npc.boundingBox
+					.expand(minRangeX, minRangeY, minRangeZ).getOffsetBoundingBox(offsetX, offsetY, offsetZ));
+			if (!list.contains(CustomNpcs.proxy.getPlayer()))
 				return;
-			if(isStreamer)
+			if (isStreamer) {
 				MusicController.Instance.playStreaming(song, npc, volume, pitch, offsetX, offsetY, offsetZ);
-			else
+			} else {
 				MusicController.Instance.playMusic(song, npc);
-		}
-        else if(MusicController.Instance.playingEntity != npc){
+			}
+		} else if (MusicController.Instance.playingEntity != npc) {
 			EntityPlayer player = CustomNpcs.proxy.getPlayer();
-			if(npc.getDistanceSqToEntity(player) < MusicController.Instance.playingEntity.getDistanceSqToEntity(player)){
+			if (npc.getDistanceSqToEntity(player) < MusicController.Instance.playingEntity
+					.getDistanceSqToEntity(player)) {
 				MusicController.Instance.playingEntity = npc;
 			}
 
-		}
-        else if(hasOffRange){
-			List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, npc.boundingBox.expand(maxRangeX, maxRangeY, maxRangeZ).getOffsetBoundingBox(offsetX, offsetY, offsetZ));
-			if(!list.contains(CustomNpcs.proxy.getPlayer()))
-				MusicController.Instance.stopMusic();
+		} else if (hasOffRange) {
+			List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, npc.boundingBox
+					.expand(maxRangeX, maxRangeY, maxRangeZ).getOffsetBoundingBox(offsetX, offsetY, offsetZ));
+			if (!list.contains(CustomNpcs.proxy.getPlayer()))
+				if (isStreamer) {
+					MusicController.Instance.fadeOutStreaming(null, 3000);
+					} else {
+					MusicController.Instance.stopMusic();
+				}
 		}
 
-        if(MusicController.Instance.isPlaying(song)) {
-            Minecraft.getMinecraft().mcMusicTicker.field_147676_d = 12000;
-        }
+		if (MusicController.Instance.isPlaying(song)) {
+			Minecraft.getMinecraft().mcMusicTicker.field_147676_d = 12000;
+		}
 	}
 
 	@Override
@@ -176,8 +188,8 @@ public class JobBard extends JobInterface{
 
 	@Override
 	public void delete() {
-		if(npc.worldObj.isRemote){
-			if(MusicController.Instance.isPlaying(song)){
+		if (npc.worldObj.isRemote) {
+			if (MusicController.Instance.isPlaying(song)) {
 				MusicController.Instance.stopMusic();
 			}
 		}

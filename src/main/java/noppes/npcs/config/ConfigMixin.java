@@ -25,6 +25,9 @@ public class ConfigMixin
 
     public static Property FirstPersonAnimationMixinProperty;
     public static boolean FirstPersonAnimationMixin = true;
+    
+    public static Property SoundManagerMixinProperty;
+    public static boolean SoundManagerMixin = true;
 
     public static void init(File configFile)
     {
@@ -39,6 +42,9 @@ public class ConfigMixin
 
             AnimationMixinProperty = config.get(CLIENT, "Animation Mixin", true, "Enables mixins for the ModelRenderer and RenderPlayer classes, allowing for additional animation functionality in the API. If crashes or visual errors occur, please disable.");
             AnimationMixin = AnimationMixinProperty.getBoolean(true);
+            
+            SoundManagerMixinProperty = config.get(CLIENT, "Sound Manager Mixin", true, "Enables Mixins for net.minecraft.client.audio.SoundManager");
+            SoundManagerMixin = SoundManagerMixinProperty.getBoolean(true);
 
             if (AnimationMixin) {
                 FirstPersonAnimationMixinProperty = config.get(CLIENT, "First Person Animation Mixin", true, "Enables mixins for the ItemRenderer class, allowing for animations to be visible in first person. Can only be enabled if the animation mixin is enabled. If crashes or visual errors occur, please disable.");

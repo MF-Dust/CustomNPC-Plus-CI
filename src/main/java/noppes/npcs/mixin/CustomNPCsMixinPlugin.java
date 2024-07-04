@@ -54,6 +54,10 @@ public class CustomNPCsMixinPlugin implements IMixinConfigPlugin {
             if (ConfigMixin.FirstPersonAnimationMixin) {
                 mixins.add("MixinItemRenderer");
             }
+            if (ConfigMixin.SoundManagerMixin) {
+                mixins.add("MixinSoundManager");
+                mixins.add("MixinSoundHandler");
+            }
         }
         return mixins;
     }
