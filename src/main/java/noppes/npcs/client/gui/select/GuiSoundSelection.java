@@ -97,7 +97,7 @@ public class GuiSoundSelection extends SubGuiInterface implements ICustomScrollL
 	protected void actionPerformed(GuiButton guibutton){
 		super.actionPerformed(guibutton);
         if(guibutton.id == 1){
-        	MusicController.Instance.stopMusic();
+        	MusicController.Instance.stopPlaying();
             MusicController.Instance.playSound(selectedResource.toString(), (float)player.posX, (float)player.posY, (float)player.posZ);
         }
         if(guibutton.id == 2){

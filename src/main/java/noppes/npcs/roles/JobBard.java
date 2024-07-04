@@ -31,6 +31,8 @@ public class JobBard extends JobInterface {
 	public int offsetX = 0;
 	public int offsetY = 0;
 	public int offsetZ = 0;
+	
+	public int fadeOutTimeMs = 0;
 
 	public float volume = 4.0F;
 	public float pitch = 1.0F;
@@ -76,6 +78,7 @@ public class JobBard extends JobInterface {
 		nbttagcompound.setInteger("BardOffsetX", offsetX);
 		nbttagcompound.setInteger("BardOffsetY", offsetY);
 		nbttagcompound.setInteger("BardOffsetZ", offsetZ);
+		nbttagcompound.setInteger("BardFadeOutTimeMs", fadeOutTimeMs);
 		nbttagcompound.setFloat("BardVolume", volume);
 		nbttagcompound.setFloat("BardPitch", pitch);
 		nbttagcompound.setInteger("BardInstrument", instrument.ordinal());
@@ -99,6 +102,7 @@ public class JobBard extends JobInterface {
 		offsetX = nbttagcompound.getInteger("BardOffsetX");
 		offsetY = nbttagcompound.getInteger("BardOffsetY");
 		offsetZ = nbttagcompound.getInteger("BardOffsetZ");
+		fadeOutTimeMs = nbttagcompound.getInteger("BardFadeOutTimeMs");
 		volume = nbttagcompound.getFloat("BardVolume");
 		pitch = nbttagcompound.getFloat("BardPitch");
 		setInstrument(nbttagcompound.getInteger("BardInstrument"));
@@ -154,9 +158,9 @@ public class JobBard extends JobInterface {
 			if (!list.contains(CustomNpcs.proxy.getPlayer()))
 				return;
 			if (isStreamer) {
-				MusicController.Instance.playStreaming(song, npc, volume, pitch, offsetX, offsetY, offsetZ);
+				MusicController.Instance.playStreaming(song, npc, volume, pitch, offsetX, offsetY, offsetZ, fadeOutTimeMs);
 			} else {
-				MusicController.Instance.playMusic(song, npc);
+				MusicController.Instance.playMusic(song, npc, volume, pitch, fadeOutTimeMs);
 			}
 		} else if (MusicController.Instance.playingEntity != npc) {
 			EntityPlayer player = CustomNpcs.proxy.getPlayer();
@@ -169,10 +173,8 @@ public class JobBard extends JobInterface {
 			List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, npc.boundingBox
 					.expand(maxRangeX, maxRangeY, maxRangeZ).getOffsetBoundingBox(offsetX, offsetY, offsetZ));
 			if (!list.contains(CustomNpcs.proxy.getPlayer()))
-				if (isStreamer) {
-					MusicController.Instance.fadeOutStreaming(null, 3000);
-					} else {
-					MusicController.Instance.stopMusic();
+				{
+					MusicController.Instance.fadeOutPlaying(null, fadeOutTimeMs);
 				}
 		}
 
@@ -190,7 +192,7 @@ public class JobBard extends JobInterface {
 	public void delete() {
 		if (npc.worldObj.isRemote) {
 			if (MusicController.Instance.isPlaying(song)) {
-				MusicController.Instance.stopMusic();
+				MusicController.Instance.stopPlaying();
 			}
 		}
 	}

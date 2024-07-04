@@ -57,6 +57,7 @@ public class CustomNPCsMixinPlugin implements IMixinConfigPlugin {
             if (ConfigMixin.SoundManagerMixin) {
                 mixins.add("MixinSoundManager");
                 mixins.add("MixinSoundHandler");
+                mixins.add("MixinPositionedSoundRecord");
             }
         }
         return mixins;

@@ -658,7 +658,7 @@ public class GuiDialogInteract extends GuiNPCInterface implements IGuiClose
 		this.options = new ArrayList<Integer>();
 
     	if(dialog.sound != null && !dialog.sound.isEmpty()){
-    		MusicController.Instance.stopMusic();
+    		MusicController.Instance.stopPlaying();
     		MusicController.Instance.playSound(dialog.sound, (float)npc.posX, (float)npc.posY, (float)npc.posZ);
     	}
 

@@ -81,11 +81,18 @@ public class GuiNpcBard extends GuiNPCInterface2 implements ISubGuiListener
         addTextField(new GuiNpcTextField(18,this, this.fontRendererObj, guiLeft+320, guiTop + 66, 20, 20,  job.pitch + ""));
         getTextField(18).setFloatsOnly();
         getTextField(18).setMinMaxDefaultFloat(0.0F, Float.MAX_VALUE, 1.0F);
+        
+        addLabel(new GuiNpcLabel(12,"bard.fadeOutTimeMs", guiLeft + 290, guiTop + 92));
+        addTextField(new GuiNpcTextField(19,this, this.fontRendererObj, guiLeft+340, guiTop + 87, 40, 20,  job.fadeOutTimeMs + ""));
+        getTextField(19).setIntegersOnly();
+        getTextField(19).setMinMaxDefault(0, Integer.MAX_VALUE, 0);
 
     	getLabel(3).enabled = job.hasOffRange;
+    	getLabel(12).enabled = job.hasOffRange;
     	getTextField(11).enabled = job.hasOffRange;
     	getTextField(12).enabled = job.hasOffRange;
     	getTextField(13).enabled = job.hasOffRange;
+    	getTextField(19).enabled = job.hasOffRange;
 
     }
 
@@ -95,13 +102,13 @@ public class GuiNpcBard extends GuiNPCInterface2 implements ISubGuiListener
         if(button.id == 0)
         {
             setSubGui(new GuiSoundSelection(job.song));
-            MusicController.Instance.stopMusic();
+            MusicController.Instance.stopPlaying();
         }
         if(button.id == 1)
         {
         	job.song = "";
         	getLabel(0).label = "";
-        	MusicController.Instance.stopMusic();
+        	MusicController.Instance.stopPlaying();
         }
         if(button.id == 2)
         {
@@ -133,6 +140,7 @@ public class GuiNpcBard extends GuiNPCInterface2 implements ISubGuiListener
     	job.maxRangeZ = getTextField(13).getInteger();
     	job.volume= getTextField(17).getFloat();
     	job.pitch= getTextField(18).getFloat();
+    	job.fadeOutTimeMs = getTextField(19).getInteger();
     			
     	if(job.minRangeX > job.maxRangeX)
     		job.maxRangeX = job.minRangeX;
@@ -141,7 +149,7 @@ public class GuiNpcBard extends GuiNPCInterface2 implements ISubGuiListener
     	if(job.minRangeZ > job.maxRangeZ)
     		job.maxRangeZ = job.minRangeZ;
 
-    	MusicController.Instance.stopMusic();
+    	MusicController.Instance.stopPlaying();
 		Client.sendData(EnumPacketServer.JobSave, job.writeToNBT(new NBTTagCompound()));
 	}
 

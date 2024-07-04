@@ -96,6 +96,7 @@ bank.unlockCosts=解锁费用
 bank.upgrade=升级
 bank.upgradeCosts=升级费用
 bard.background=像背景音乐一样播放
+bard.fadeOutTimeMs=淡出(ms)
 bard.hasoff=可因距离关闭
 bard.jukebox=像唱片机一样播放
 bard.offdistance=关闭距离

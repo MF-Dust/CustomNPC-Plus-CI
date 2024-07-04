@@ -54,7 +54,7 @@ public class ClientTickHandler{
 		RenderNPCInterface.LastTextureTick++;
 		if(prevWorld != mc.theWorld){
 			prevWorld = mc.theWorld;
-			MusicController.Instance.stopMusic();
+			MusicController.Instance.stopPlaying();
 		}
 		ScriptSoundController.Instance.onUpdate();
 		if(Minecraft.getMinecraft().thePlayer!=null && (prevWidth!=mc.displayWidth || prevHeight!=mc.displayHeight)){

@@ -96,6 +96,7 @@ bank.unlockCosts=Costs to unlock
 bank.upgrade=Upgrade
 bank.upgradeCosts=Costs to upgrade
 bard.background=Play as background
+bard.fadeOutTimeMs=Fade Out (ms)
 bard.hasoff=Has Off Distance
 bard.jukebox=Play as jukebox
 bard.offdistance=Off Distance
