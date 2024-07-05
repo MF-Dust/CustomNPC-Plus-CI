@@ -84,3 +84,29 @@ Using IntelliJ, take the following steps:
 or for Eclipse, run `gradlew setupDecompWorkspace eclipse` then import the project. 
 
 Mixin code will not work if you do not add `--tweakClass org.spongepowered.asm.launch.MixinTweaker --mixin customnpcs.mixins.json` to your program arguments.
+
+----------------
+
+## 该分支的说明
+
+该分支为@[Fodoth_jinzi89](https://github.com/Fodoth-jinzi89)为了更新《神剑创造者》而修改的版本。
+
+### 增加的功能
+
+- 改变商人逻辑，现在兑换的物品会直接输入背包，可以按shift一键全部兑换（需要背包有空位）
+- 增强吟游诗人，可以选方型范围播放，可以设置淡出
+- 可配置游戏追踪NPC的范围，解决雇佣兵不传送/吟游诗人音乐突然停止的问题
+- 修正了任务追踪器不能应用颜色代码的问题
+- 修正全部汉化
+
+### 效果图
+
+#### 商人:
+<img src="images/Trader2.gif" width="474" height="260"/>
+
+#### 吟游诗人:
+<img src="images/Bard.png" width="474" height="260"/>
+
+### 未来的更新计划
+
+- 改变存储逻辑，支持shift滑动存取（类似MouseTweak），以及整理（类似Quark）
