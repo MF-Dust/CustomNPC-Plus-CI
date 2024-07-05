@@ -308,6 +308,7 @@ gui.panic=恐慌
 gui.partly=部分的
 gui.paste=粘贴
 gui.play=播放
+gui.stopAllSound=停止
 gui.playernearby=旁边的玩家
 gui.position=位置
 gui.quesktracking.complete_automatically=自动完成

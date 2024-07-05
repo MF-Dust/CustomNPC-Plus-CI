@@ -134,31 +134,34 @@ public class CustomNpcs {
         FMLCommonHandler.instance().bus().register(scriptItemEventHandler);
 
         FMLCommonHandler.instance().bus().register(new ServerTickHandler());
+        
+        int range = ConfigMain.NpcTrackRange;
+        int updateInterval = ConfigMain.NpcUpdateInterval;
 
-        registerNpc(EntityNPCHumanMale.class, "npchumanmale");
-        registerNpc(EntityNPCVillager.class, "npcvillager");
-        registerNpc(EntityNpcPony.class, "npcpony");
-        registerNpc(EntityNPCHumanFemale.class, "npchumanfemale");
-        registerNpc(EntityNPCDwarfMale.class, "npcdwarfmale");
-        registerNpc(EntityNPCFurryMale.class, "npcfurrymale");
-        registerNpc(EntityNpcMonsterMale.class, "npczombiemale");
-        registerNpc(EntityNpcMonsterFemale.class, "npczombiefemale");
-        registerNpc(EntityNpcSkeleton.class, "npcskeleton");
-        registerNpc(EntityNPCDwarfFemale.class, "npcdwarffemale");
-        registerNpc(EntityNPCFurryFemale.class, "npcfurryfemale");
-        registerNpc(EntityNPCOrcMale.class, "npcorcfmale");
-        registerNpc(EntityNPCOrcFemale.class, "npcorcfemale");
-        registerNpc(EntityNPCElfMale.class, "npcelfmale");
-        registerNpc(EntityNPCElfFemale.class, "npcelffemale");
-        registerNpc(EntityNpcCrystal.class, "npccrystal");
-        registerNpc(EntityNpcEnderchibi.class, "npcenderchibi");
-        registerNpc(EntityNpcNagaMale.class, "npcnagamale");
-        registerNpc(EntityNpcNagaFemale.class, "npcnagafemale");
-        registerNpc(EntityNpcSlime.class, "NpcSlime");
-        registerNpc(EntityNpcDragon.class, "NpcDragon");
-        registerNpc(EntityNPCEnderman.class, "npcEnderman");
-        registerNpc(EntityNPCGolem.class, "npcGolem");
-        registerNpc(EntityCustomNpc.class, "CustomNpc");
+        registerNpc(EntityNPCHumanMale.class, "npchumanmale", range, updateInterval);
+        registerNpc(EntityNPCVillager.class, "npcvillager", range, updateInterval);
+        registerNpc(EntityNpcPony.class, "npcpony", range, updateInterval);
+        registerNpc(EntityNPCHumanFemale.class, "npchumanfemale", range, updateInterval);
+        registerNpc(EntityNPCDwarfMale.class, "npcdwarfmale", range, updateInterval);
+        registerNpc(EntityNPCFurryMale.class, "npcfurrymale", range, updateInterval);
+        registerNpc(EntityNpcMonsterMale.class, "npczombiemale", range, updateInterval);
+        registerNpc(EntityNpcMonsterFemale.class, "npczombiefemale", range, updateInterval);
+        registerNpc(EntityNpcSkeleton.class, "npcskeleton", range, updateInterval);
+        registerNpc(EntityNPCDwarfFemale.class, "npcdwarffemale", range, updateInterval);
+        registerNpc(EntityNPCFurryFemale.class, "npcfurryfemale", range, updateInterval);
+        registerNpc(EntityNPCOrcMale.class, "npcorcfmale", range, updateInterval);
+        registerNpc(EntityNPCOrcFemale.class, "npcorcfemale", range, updateInterval);
+        registerNpc(EntityNPCElfMale.class, "npcelfmale", range, updateInterval);
+        registerNpc(EntityNPCElfFemale.class, "npcelffemale", range, updateInterval);
+        registerNpc(EntityNpcCrystal.class, "npccrystal", range, updateInterval);
+        registerNpc(EntityNpcEnderchibi.class, "npcenderchibi", range, updateInterval);
+        registerNpc(EntityNpcNagaMale.class, "npcnagamale", range, updateInterval);
+        registerNpc(EntityNpcNagaFemale.class, "npcnagafemale", range, updateInterval);
+        registerNpc(EntityNpcSlime.class, "NpcSlime", range, updateInterval);
+        registerNpc(EntityNpcDragon.class, "NpcDragon", range, updateInterval);
+        registerNpc(EntityNPCEnderman.class, "npcEnderman", range, updateInterval);
+        registerNpc(EntityNPCGolem.class, "npcGolem", range, updateInterval);
+        registerNpc(EntityCustomNpc.class, "CustomNpc", range, updateInterval);
 
         registerNewEntity(EntityChairMount.class, "CustomNpcChairMount", 64, 10, false);
         registerNewEntity(EntityProjectile.class, "throwableitem", 64, 3, true);
@@ -255,8 +258,14 @@ public class CustomNpcs {
         event.registerServerCommand(new CommandKamkeel());
     }
 
+    @Deprecated
     private void registerNpc(Class<? extends Entity> cl, String name) {
         EntityRegistry.registerModEntity(cl, name, NewEntityStartId++, this, 64, 3, true);
+        EntityList.stringToClassMapping.put(name, cl);
+    }
+    
+    private void registerNpc(Class<? extends Entity> cl, String name, int range, int update) {
+        EntityRegistry.registerModEntity(cl, name, NewEntityStartId++, this, range, update, true);
         EntityList.stringToClassMapping.put(name, cl);
     }
 

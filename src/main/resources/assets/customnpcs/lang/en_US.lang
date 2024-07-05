@@ -308,6 +308,7 @@ gui.panic=Panic
 gui.partly=Partially
 gui.paste=Paste
 gui.play=Play
+gui.stopAllSound=Stop
 gui.playernearby=Player nearby
 gui.position=Position
 gui.quesktracking.complete_automatically=Complete Automatically

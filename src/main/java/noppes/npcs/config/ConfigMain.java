@@ -84,6 +84,7 @@ public class ConfigMain
 
     public static Property DefaultMaxPartySizeProperty;
     public static int DefaultMaxPartySize = 4;
+    
 
     /**
      *  General NPC Properties
@@ -94,6 +95,12 @@ public class ConfigMain
 
     public static Property NpcNavRangeProperty;
     public static int NpcNavRange = 32;
+    
+    public static Property NpcTrackRangeProperty;
+    public static int NpcTrackRange = 64;
+    
+    public static Property NpcUpdateIntervalProperty;
+    public static int NpcUpdateInterval = 3;
 
     public static Property NpcSizeLimitProperty;
     public static int NpcSizeLimit = 100;
@@ -111,7 +118,7 @@ public class ConfigMain
     public static int SkinOverlayLimit = 10;
 
     public static Property NpcUseOpCommandsProperty;
-    public static boolean NpcUseOpCommands = false;
+    public static boolean NpcUseOpCommands = true;
 
     public static Property HitBoxScaleMaxProperty;
     public static int HitBoxScaleMax = 15;
@@ -186,12 +193,18 @@ public class ConfigMain
             // NPC
             NpcNavRangeProperty = config.get(NPC, "NPC Navigation Range", 32, "Navigation search range for NPCs. Not recommended to increase if you have a slow pc or on a server. Minimum of 16, maximum of 96.");
             NpcNavRange = NpcNavRangeProperty.getInt(32);
+            
+            NpcTrackRangeProperty = config.get(NPC, "NPC Track Range", 64, "Track range for onLivingUpdate() for NPCs. Not recommended to increase if you have a slow pc or on a server. Default of 64");
+            NpcTrackRange = NpcTrackRangeProperty.getInt(64);
+            
+            NpcUpdateIntervalProperty = config.get(NPC, "NPC Update Interval", 3, "Update interval for onLivingUpdate() for NPCs. Lower values may cause lags.");
+            NpcUpdateInterval = NpcUpdateIntervalProperty.getInt(3);
 
             OpsOnlyProperty = config.get(NPC, "Only Ops Edit NPCs", false, "Only ops can create and edit npcs");
             OpsOnly = OpsOnlyProperty.getBoolean(false);
 
-            NpcUseOpCommandsProperty = config.get(NPC, "NPC Use Op Commands", false, "Set to true if you want the dialog command option to be able to use op commands like tp etc");
-            NpcUseOpCommands = NpcUseOpCommandsProperty.getBoolean(false);
+            NpcUseOpCommandsProperty = config.get(NPC, "NPC Use Op Commands", true, "Set to true if you want the dialog command option to be able to use op commands like tp etc");
+            NpcUseOpCommands = NpcUseOpCommandsProperty.getBoolean(true);
 
             DefaultInteractLineProperty = config.get(NPC, "Default Interaction Line", "Hello @p", "Default interact line. Leave empty to not have one");
             DefaultInteractLine = DefaultInteractLineProperty.getString();

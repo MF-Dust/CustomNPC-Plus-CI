@@ -43,7 +43,7 @@ public class JobBard extends JobInterface {
 	public String song = "";
 
 	private EnumBardInstrument instrument = EnumBardInstrument.Banjo;
-	
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	public JobBard(EntityNPCInterface npc) {
 		super(npc);
@@ -151,7 +151,7 @@ public class JobBard extends JobInterface {
 	public void onLivingUpdate() {
 		if (!npc.isRemote() || song.isEmpty())
 			return;
-
+		//LOGGER.info("onLivingUpdate1 call: ");
 		if (!MusicController.Instance.isPlaying(song)) {
 			List<EntityPlayer> list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, npc.boundingBox
 					.expand(minRangeX, minRangeY, minRangeZ).getOffsetBoundingBox(offsetX, offsetY, offsetZ));
@@ -163,6 +163,11 @@ public class JobBard extends JobInterface {
 				MusicController.Instance.playMusic(song, npc, volume, pitch, fadeOutTimeMs);
 			}
 		} else if (MusicController.Instance.playingEntity != npc) {
+			/*
+			 * 这个功能可以“接力播放” 
+			 * 设置要求：触发范围不能重叠，关闭范围重叠 
+			 * 小bug：在关闭范围重叠的那一小层进入则不会触发音乐
+			 */
 			EntityPlayer player = CustomNpcs.proxy.getPlayer();
 			if (npc.getDistanceSqToEntity(player) < MusicController.Instance.playingEntity
 					.getDistanceSqToEntity(player)) {
@@ -177,7 +182,7 @@ public class JobBard extends JobInterface {
 					MusicController.Instance.fadeOutPlaying(null, fadeOutTimeMs);
 				}
 		}
-
+		//LOGGER.info("onLivingUpdate2 call: ");
 		if (MusicController.Instance.isPlaying(song)) {
 			Minecraft.getMinecraft().mcMusicTicker.field_147676_d = 12000;
 		}

@@ -58,6 +58,7 @@ public class GuiSoundSelection extends SubGuiInterface implements ICustomScrollL
     @Override
     public void initGui(){
         super.initGui();
+        this.addButton(new GuiNpcButton(3, guiLeft + 80, guiTop + ySize - 35, 70, 20, "gui.stopAllSound"));
     	this.addButton(new GuiNpcButton(2, guiLeft + xSize - 45, guiTop + ySize - 35, 40, 20, "gui.done"));
     	this.addButton(new GuiNpcButton(1, guiLeft + 4, guiTop + ySize - 35, 70, 20, "gui.play"));
         getButton(1).enabled = selectedResource != null;
@@ -102,6 +103,9 @@ public class GuiSoundSelection extends SubGuiInterface implements ICustomScrollL
         }
         if(guibutton.id == 2){
     		close();
+        }
+        if(guibutton.id == 3){
+        	MusicController.Instance.stopPlaying();
         }
     }
 
