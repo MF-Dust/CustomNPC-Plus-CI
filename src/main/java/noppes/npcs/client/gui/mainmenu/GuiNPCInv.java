@@ -47,7 +47,7 @@ public class GuiNPCInv extends GuiContainerNPCInterface2 implements IGuiData, IT
         getTextField(0).setMinMaxDefault(0, getTextField(1).getInteger(), 0);
         getTextField(1).setMinMaxDefault(getTextField(0).getInteger(), Short.MAX_VALUE, 0);
 
-        addButton(new GuiNpcButton(10, guiLeft + 88, guiTop + 88, 80, 20, new String[]{"stats.normal", "inv.auto"}, npc.inventory.lootMode));
+        addButton(new GuiNpcButton(10, guiLeft + 88, guiTop + 88, 80, 20, new String[]{"inv.ground", "inv.toPlayerInv"}, npc.inventory.lootMode));
 
         addLabel(new GuiNpcLabel(2,"inv.npcInventory", guiLeft + 191, guiTop + 5));
         addLabel(new GuiNpcLabel(3,"inv.inventory", guiLeft + 8, guiTop + 101));

@@ -92,6 +92,9 @@ public class ConfigMain
 
     public static Property OpsOnlyProperty;
     public static boolean OpsOnly = false;
+    
+    public static Property DropsOnlyPlayerKillProperty;
+    public static boolean DropsOnlyPlayerKill = false;
 
     public static Property NpcNavRangeProperty;
     public static int NpcNavRange = 32;
@@ -202,6 +205,9 @@ public class ConfigMain
 
             OpsOnlyProperty = config.get(NPC, "Only Ops Edit NPCs", false, "Only ops can create and edit npcs");
             OpsOnly = OpsOnlyProperty.getBoolean(false);
+            
+            DropsOnlyPlayerKillProperty = config.get(NPC, "NPC Only Drops Item When Killed By Players", false, "NPCs only drops item when killed by players.");
+            DropsOnlyPlayerKill = DropsOnlyPlayerKillProperty.getBoolean(false);
 
             NpcUseOpCommandsProperty = config.get(NPC, "NPC Use Op Commands", true, "Set to true if you want the dialog command option to be able to use op commands like tp etc");
             NpcUseOpCommands = NpcUseOpCommandsProperty.getBoolean(true);

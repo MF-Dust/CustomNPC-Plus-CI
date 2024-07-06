@@ -1341,7 +1341,7 @@ public abstract class EntityNPCInterface extends EntityCreature implements IEnti
 			}
 			droppedXp = event.expDropped;
 
-			if(this.recentlyHit > 0) {
+			if(!ConfigMain.DropsOnlyPlayerKill || this.recentlyHit > 0) {
 				inventory.dropItems(entity, droppedItems);
 				inventory.dropXp(entity, droppedXp);
 			}
