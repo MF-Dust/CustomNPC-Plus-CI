@@ -89,14 +89,15 @@ Mixin code will not work if you do not add `--tweakClass org.spongepowered.asm.l
 
 ## 该分支的说明
 
-该分支为@[Fodoth_jinzi89](https://github.com/Fodoth-jinzi89)为了更新《神剑创造者》而修改的版本。
+该分支为 @[Fodoth_jinzi89](https://github.com/Fodoth-jinzi89) 为了更新《神剑创造者》而修改的版本。
 
 ### 增加的功能
 
 - 改变商人逻辑，现在兑换的物品会直接输入背包，可以按shift一键全部兑换（需要背包有空位）
+- 改变存储者逻辑，支持Shift滑动存取（类似MouseTweak），并为部分其它重要GUI添加了Shift滑动支持（如商人）
 - 增强吟游诗人，可以选方型范围播放，可以设置淡出
 - 可配置游戏追踪NPC的范围，解决雇佣兵不传送/吟游诗人音乐突然停止的问题
-- 可配置NPC是否只在被玩家（和驯服的狼）击杀时生成掉落物，解决凝土镇矮人炮台打败传送核心不掉东西的问题
+- 可配置NPC是否只在被玩家（和驯服的狼）击杀时生成掉落物，解决例如凝土镇矮人炮台打败传送核心不掉东西的问题
 - 修正了任务追踪器不能应用颜色代码的问题
 - 修正全部汉化
 
@@ -108,6 +109,5 @@ Mixin code will not work if you do not add `--tweakClass org.spongepowered.asm.l
 #### 吟游诗人:
 <img src="images/Bard.png" width="474" height="260"/>
 
-### 未来的更新计划
-
-- 改变存储逻辑，支持shift滑动存取（类似MouseTweak），以及整理（类似Quark）
+#### 存储者/商人滑动支持:
+<img src="images/Trader3.gif" width="474" height="260"/>

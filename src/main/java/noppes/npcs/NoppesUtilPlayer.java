@@ -678,8 +678,8 @@ public class NoppesUtilPlayer {
         if (item2 == null || item == null){
             return false;
         }
-        boolean oreMatched = false;
-        OreDictionary.itemMatches(item, item2, false);
+        
+        
         int[] ids = OreDictionary.getOreIDs(item);
         if(ids.length > 0){
         	for(int id : ids){
@@ -699,7 +699,7 @@ public class NoppesUtilPlayer {
 		return compareItemDetails(item, item2, ignoreDamage, ignoreNBT);
 	}
 	private static boolean compareItemDetails(ItemStack item, ItemStack item2, boolean ignoreDamage, boolean ignoreNBT){
-        if (item.getItem() != item2.getItem() ){
+        if (!OreDictionary.itemMatches(item, item2, false)){
             return false;
         }
 		if (!ignoreDamage && item.getItemDamage() != -1 && item.getItemDamage() != item2.getItemDamage()){

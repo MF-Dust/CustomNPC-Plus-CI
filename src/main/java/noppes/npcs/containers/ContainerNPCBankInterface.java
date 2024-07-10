@@ -1,5 +1,8 @@
 package noppes.npcs.containers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -10,7 +13,8 @@ import noppes.npcs.controllers.data.PlayerBankData;
 
 public class ContainerNPCBankInterface extends ContainerNpcInterface
 {
-    public InventoryNPC currencyMatrix;
+    private static final Logger logger = LogManager.getLogger();
+	public InventoryNPC currencyMatrix;
     private EntityPlayer player;
     public SlotNpcBankCurrency currency;
     public int slot = 0;
@@ -36,28 +40,28 @@ public class ContainerNPCBankInterface extends ContainerNpcInterface
         }
         
         int xOffset = xOffset();
+        int id = 1;
         for (int j = 0; j < getRowNumber(); j++)
         {
             for (int i1 = 0; i1 < 9; i1++)
             {
-            	int id = i1 + j * 9;
             	addSlotToContainer(new Slot(items, id, 8 + i1 * 18, 17 + xOffset + j * 18));
+            	id++;
             }
         }
         
         if(isUpgraded())
         	xOffset += 54;
-        for (int k = 0; k < 3; k++)
-        {
-            for (int j1 = 0; j1 < 9; j1++)
-            {
-            	addSlotToContainer(new Slot(player.inventory, j1 + k * 9 + 9, 8 + j1 * 18, 86 + xOffset + k * 18));
+        for (int k = 0; k < 3; k++) {
+            for (int j1 = 0; j1 < 9; j1++) {
+                int id1 = j1 + k * 9 + 9;
+                addSlotToContainer(new Slot(player.inventory, id1, 8 + j1 * 18, 86 + xOffset + k * 18));
             }
         }
 
-        for (int l = 0; l < 9; l++)
-        {
-        	addSlotToContainer(new Slot(player.inventory, l, 8 + l * 18, 144 + xOffset ));
+        for (int l = 0; l < 9; l++) {
+            int id2 = l;
+            addSlotToContainer(new Slot(player.inventory, id2, 8 + l * 18, 144 + xOffset));
         }
     }
     public int getRowNumber() {
@@ -85,9 +89,39 @@ public class ContainerNPCBankInterface extends ContainerNpcInterface
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int i)
+    public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
-    	return null;
+        ItemStack itemstack = null;
+        Slot slot = (Slot)this.inventorySlots.get(index);
+
+        if (slot != null && slot.getHasStack())
+        {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+
+            if (index < getRowNumber() * 9)
+            {
+                if (!this.mergeItemStack(itemstack1, getRowNumber() * 9, this.inventorySlots.size(), true))
+                {
+                    return null;
+                }
+            }
+            else if (!this.mergeItemStack(itemstack1, 0, getRowNumber() * 9, false))
+            {
+                return null;
+            }
+
+            if (itemstack1.stackSize == 0)
+            {
+                slot.putStack((ItemStack)null);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+        }
+
+        return itemstack;
     }   
     @Override
     public void onContainerClosed(EntityPlayer entityplayer)
@@ -102,4 +136,12 @@ public class ContainerNPCBankInterface extends ContainerNpcInterface
             }
         }
     }
+    
+    @Override
+    public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer player) {
+    	//logger.info("SlotID="+slotId+";clickedButton="+clickedButton+";mode="+mode);
+    	return super.slotClick(slotId, clickedButton, mode, player);
+    }
+	
+
 }

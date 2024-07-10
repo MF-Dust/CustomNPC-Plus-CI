@@ -2,6 +2,7 @@ package noppes.npcs.client.gui.player;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -15,11 +16,15 @@ import noppes.npcs.client.gui.util.IGuiData;
 import noppes.npcs.constants.EnumPlayerPacket;
 import noppes.npcs.containers.ContainerNPCBankInterface;
 import noppes.npcs.entity.EntityNPCInterface;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GuiNPCBankChest extends GuiContainerNPCInterface implements IGuiData
 {
+
+	
 	private final ResourceLocation resource = new ResourceLocation("customnpcs","textures/gui/bankchest.png");
     private ContainerNPCBankInterface container;
     private int availableSlots = 0;
@@ -155,4 +160,28 @@ public class GuiNPCBankChest extends GuiContainerNPCInterface implements IGuiDat
 			container.currency.item = currency;
 		initGui();
 	}
+	
+    @SuppressWarnings("unchecked")
+	protected Slot getSlot(final int mouseX, final int mouseY) {
+        final List<Slot> slots = this.container.inventorySlots;
+        for (final Slot slot : slots) {
+            if (this.isPointInRegion(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, mouseX, mouseY)) {
+                return slot;
+            }
+        }
+
+        return null;
+    }
+    
+    protected boolean isPointInRegion(int rectX, int rectY, int rectWidth, int rectHeight, int pointX, int pointY) {
+        int i = this.guiLeft;
+        int j = this.guiTop;
+        pointX -= i;
+        pointY -= j;
+        return pointX >= rectX - 1 && pointX < rectX + rectWidth + 1
+                && pointY >= rectY - 1
+                && pointY < rectY + rectHeight + 1;
+    }
+	
+	
 }
