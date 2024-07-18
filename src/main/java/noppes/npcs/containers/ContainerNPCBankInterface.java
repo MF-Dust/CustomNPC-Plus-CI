@@ -40,7 +40,7 @@ public class ContainerNPCBankInterface extends ContainerNpcInterface
         }
         
         int xOffset = xOffset();
-        int id = 1;
+        int id = 0;
         for (int j = 0; j < getRowNumber(); j++)
         {
             for (int i1 = 0; i1 < 9; i1++)
