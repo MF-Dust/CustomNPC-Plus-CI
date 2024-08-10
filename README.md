@@ -90,6 +90,7 @@ Mixin code will not work if you do not add `--tweakClass org.spongepowered.asm.l
 ## 该分支的说明
 
 该分支为 @[Fodoth_jinzi89](https://github.com/Fodoth-jinzi89) 为了更新《神剑创造者》而修改的版本。
+注意：config中默认开启了mixin，故需要能提供mixin的依赖模组。你可以直接使用神剑里的配置（即同时安装gtnhlib和unimixins）。
 
 ### 增加的功能
 
