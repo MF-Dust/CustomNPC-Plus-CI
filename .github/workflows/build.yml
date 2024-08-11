@@ -30,7 +30,8 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           cache-read-only: false
-
+      - name: Fix Perm
+        run: chmod +x ./gradlew
       - name: Execute Gradle build
         run: ./gradlew build
 
